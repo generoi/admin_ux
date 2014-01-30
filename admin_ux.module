@@ -1,0 +1,52 @@
+<?php
+
+/**
+ * @file admin_ux.module
+ * TODO: Enter file description here.
+ */
+
+if (module_exists('admin_views')) {
+  module_load_include('inc', 'admin_ux', 'includes/admin_ux.admin_views');
+}
+if (module_exists('block')) {
+  module_load_include('inc', 'admin_ux', 'includes/admin_ux.block');
+}
+if (module_exists('diff')) {
+  module_load_include('inc', 'admin_ux', 'includes/admin_ux.diff');
+}
+
+/**
+ * Implements hook_init().
+ *
+ * For whatever reason hook_page_build() wont include files when overlay is loaded.
+ */
+function admin_ux_init() {
+  global $theme_info;
+
+  // Fix various UX issues in the administration theme.
+  if ($theme_info->name == variable_get('admin_theme')) {
+    drupal_add_css(drupal_get_path('module', 'admin_ux') . '/admin_ux.admin.css');
+    if (module_exists('chosen')) {
+      drupal_add_js(drupal_get_path('module', 'admin_ux') . '/js/admin_ux.chosen.js');
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function admin_ux_form_alter(&$form, &$form_state, $form_id) {
+  if (strpos($form_id, '_node_form') > 0) {
+    // @TODO what is this?
+    $form['options']['#weight'] = -3;
+
+    if (module_exists('metatag')) {
+      module_load_include('inc', 'admin_ux', 'includes/admin_ux.metatag');
+      _admin_ux_metatag_description($form, $form_state);
+    }
+    if (module_exists('redirect')) {
+      module_load_include('inc', 'admin_ux', 'includes/admin_ux.redirect');
+      _admin_ux_redirect_outgoing($form, $form_state);
+    }
+  }
+}

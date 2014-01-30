@@ -1,0 +1,4 @@
+name = Admin UX
+description = Small administration UX improvements
+package = custom
+core = 7.x
