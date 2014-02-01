@@ -10,6 +10,7 @@ CSS styling
 * Make field multiple tables more compact
 * Move formatted textareas description above the textarea
 * Make context ui tags more distinguishable
+* Make context ui more compact
 * Fix viewfield widgets description not breaking
 * Fix views footer being stuck to the bottom in DS
 * Make it visible that views settings are overriden (all of the settings)
