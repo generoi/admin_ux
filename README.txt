@@ -16,6 +16,7 @@ CSS styling
 * Make it visible that views settings are overriden (all of the settings)
 * Custom form styling classes in fields ui
 * Make CKEditor panels (format/styles) larger
+* Make views overview UI more compact
 
 Code
 ----

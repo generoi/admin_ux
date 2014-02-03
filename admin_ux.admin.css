@@ -86,6 +86,20 @@ table.context-admin td {
 /* Show the links under eg contextual, relationsships etc as italic when overriden. */
 .views-ui-display-tab-bucket.overridden a { font-style: italic; }
 
+/* Make views overview table more compact */
+#views-ui-list-page {
+  font-size: 90%;
+  line-height: 1;
+}
+#views-ui-list-page th.views-ui-operations { width: 15%; }
+#views-ui-list-page th.views-ui-name { width: 30%; }
+#views-ui-list-page .views-ui-view-displays,
+#views-ui-list-page .views-ui-view-storage,
+#views-ui-list-page .views-ui-view-base {
+  float: left;
+  margin-right: .5em;
+}
+
 /* Custom form styling classes usable through field groups */
 /* ------------------------------------------------- */
 
