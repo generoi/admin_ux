@@ -106,3 +106,11 @@ table.context-admin td {
 .form-wrapper-columns > .field-type-viewfield {
   width: 350px;
 }
+
+/* CKEditor */
+/* ------------------------------------------------- */
+
+/* Make the style dropdown larger */
+.cke_combopanel {
+  height: 300px !important;
+}

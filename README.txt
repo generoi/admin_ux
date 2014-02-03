@@ -15,6 +15,7 @@ CSS styling
 * Fix views footer being stuck to the bottom in DS
 * Make it visible that views settings are overriden (all of the settings)
 * Custom form styling classes in fields ui
+* Make CKEditor panels (format/styles) larger
 
 Code
 ----
