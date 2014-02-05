@@ -35,18 +35,16 @@ function admin_ux_init() {
 /**
  * Implements hook_form_alter().
  */
-function admin_ux_form_alter(&$form, &$form_state, $form_id) {
-  if (strpos($form_id, '_node_form') > 0) {
-    // @TODO what is this?
-    $form['options']['#weight'] = -3;
+function admin_ux_form_node_form_alter(&$form, &$form_state, $form_id) {
+  // Move publishing options to the first (visible) tab.
+  $form['options']['#weight'] = -3;
 
-    if (module_exists('metatag')) {
-      module_load_include('inc', 'admin_ux', 'includes/admin_ux.metatag');
-      _admin_ux_metatag_description($form, $form_state);
-    }
-    if (module_exists('redirect')) {
-      module_load_include('inc', 'admin_ux', 'includes/admin_ux.redirect');
-      _admin_ux_redirect_outgoing($form, $form_state);
-    }
+  if (module_exists('metatag')) {
+    module_load_include('inc', 'admin_ux', 'includes/admin_ux.metatag');
+    _admin_ux_metatag_description($form, $form_state);
+  }
+  if (module_exists('redirect')) {
+    module_load_include('inc', 'admin_ux', 'includes/admin_ux.redirect');
+    _admin_ux_redirect_outgoing($form, $form_state);
   }
 }
