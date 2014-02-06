@@ -61,3 +61,16 @@ function admin_ux_css_alter(&$css) {
   );
   $css = array_diff_key($css, $exclude);
 }
+
+/**
+ * Implements template_preprocess_taxonomy_overview_vocabularies().
+ */
+function admin_ux_preprocess_taxonomy_overview_vocabularies(&$variables) {
+  $form = &$variables['form'];
+  foreach (element_children($form) as $key) {
+    if (isset($form[$key]['name'])) {
+      $vocabulary = &$form[$key];
+      $vocabulary['name']['#markup'] .= '<br /><small>' . $vocabulary['#vocabulary']->description . '</small>';
+    }
+  }
+}

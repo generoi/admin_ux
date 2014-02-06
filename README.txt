@@ -33,3 +33,4 @@ Code
 * Cache Control: Make block settings collapsible and collapsed by default
 * Block theme: Add a common case example to the description for blocktheme
   variables.
+* Output vocabulary description in the vocabulary overview table.
