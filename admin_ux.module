@@ -48,3 +48,16 @@ function admin_ux_form_node_form_alter(&$form, &$form_state, $form_id) {
     _admin_ux_redirect_outgoing($form, $form_state);
   }
 }
+
+/**
+ * Implements hook_ux_css_alter().
+ *
+ * Remove the request for viewfield.css as it doesnt exist, the white-space fix
+ * exists in admin_ux.admin.css.
+ */
+function admin_ux_css_alter(&$css) {
+  $exclude = array(
+    'sites/all/modules/contrib/viewfield/viewfield.css' => FALSE,
+  );
+  $css = array_diff_key($css, $exclude);
+}
