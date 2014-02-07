@@ -34,3 +34,5 @@ Code
 * Block theme: Add a common case example to the description for blocktheme
   variables.
 * Output vocabulary description in the vocabulary overview table.
+* Display views usage based on viewfield on view edit form.
+* Display views summary with display descriptions on view edit form.

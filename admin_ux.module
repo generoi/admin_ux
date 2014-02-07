@@ -74,3 +74,97 @@ function admin_ux_preprocess_taxonomy_overview_vocabularies(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ * Display a summary of the view in the edit form.
+ */
+function admin_ux_form_views_ui_edit_form_alter(&$form, &$form_state) {
+  $view = $form_state['view'];
+  $display_summary = '';
+
+  $matches = admin_ux_views_usage($view->name);
+  $usage = array(
+    '#theme' => 'item_list',
+    '#items' => $matches,
+  );
+
+  $form['view_usage'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('View usage'),
+    '#description' => t('Currently only displayes viewfield usage.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#weight' => -4,
+    'matches' => $usage,
+  );
+
+  $display_summary .= '<dl>';
+  foreach ($view->display as $display) {
+    $disabled = isset($display->display_options['enabled']) && !$display->display_options['enabled'] ? ' <small>(' . t('Disabled') . ')</small>' : '';
+    $display_summary .= '<dt><em>' . $display->display_title . $disabled . '</em></dt><dd>' . $display->display_options['display_description'] . '</dd>';
+  }
+  $display_summary .= '</dl>';
+
+  $form['summary'] = array(
+    '#title' => t('View: @name', array('@name' => $view->human_name)),
+    '#description' => $view->description,
+    '#weight' => -5,
+    '#collapsible' => TRUE,
+    '#type' => 'fieldset',
+  );
+  $form['summary'][] = array('#markup' => $display_summary);
+}
+
+/**
+ * Return a list of views usage.
+ */
+function admin_ux_views_usage($view) {
+  $matches = array();
+  if (module_exists('viewfield')) {
+    $matches = array_merge($matches, admin_ux_views_usage_viewfield($view));
+  }
+  return $matches;
+}
+
+/**
+ * Return views usage based on viewfield instances.
+ */
+function admin_ux_views_usage_viewfield($view) {
+  $fields = field_info_field_map();
+  $entity_loads = array();
+  $instance_options = array();
+  $matches = array();
+  foreach ($fields as $field_name => $field) {
+    if ($field['type'] == 'viewfield') {
+      $table_name = 'field_data_' . $field_name;
+      $items = db_select($table_name, 'v')
+        ->fields('v', array('entity_type', 'entity_id', "{$field_name}_vname", "{$field_name}_vargs"))
+        ->condition("{$field_name}_vname", db_like($view) . '|%', 'LIKE')
+        ->execute()
+        ->fetchAll();
+
+      foreach ($items as $item) {
+        list(,$display_name) = explode('|', $item->{"{$field_name}_vname"});
+        $args = $item->{"{$field_name}_vargs"};
+        $entity_loads[$item->entity_type][] = $item->entity_id;
+        $instance_options[$item->entity_type][$item->entity_id][] = $display_name . ': "' . $args . '"';
+      }
+    }
+  }
+
+  foreach ($entity_loads as $entity_type => $ids) {
+    // In case of nodes with a default value.
+    if (count($ids) > 20) {
+      $matches[] = l($entity_type . ' # ' . implode(', ', $ids)) . ' (' . t('Too many to load') . ')';
+      continue;
+    }
+    $entities = entity_load($entity_type, $ids);
+    foreach ($entities as $id => $entity) {
+      $uri = entity_uri($entity_type, $entity);
+      $options = $instance_options[$entity_type][$id];
+      $matches[] = l($entity_type . ' # ' . $id, $uri['path']) . ' (' . implode(', ', $options) . ')';
+    }
+  }
+  return $matches;
+}
