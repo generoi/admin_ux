@@ -102,7 +102,7 @@ function admin_ux_form_views_ui_edit_form_alter(&$form, &$form_state) {
   $display_summary .= '<dl>';
   foreach ($view->display as $display) {
     $disabled = isset($display->display_options['enabled']) && !$display->display_options['enabled'] ? ' <small>(' . t('Disabled') . ')</small>' : '';
-    $display_summary .= '<dt><em>' . $display->display_title . $disabled . '</em></dt><dd>' . $display->display_options['display_description'] . '</dd>';
+    $display_summary .= '<dt><em>' . $display->display_title . $disabled . '</em></dt><dd>' . (isset($display->display_options['display_description']) ? $display->display_options['display_description'] : '') . '</dd>';
   }
   $display_summary .= '</dl>';
 
