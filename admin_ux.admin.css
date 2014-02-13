@@ -100,6 +100,9 @@ table.context-admin td {
   margin-right: .5em;
 }
 
+/* Let textfields span the entire width in views settings forms so eg grid classes fit */
+#views-ui-edit-display-form input[type="text"] { width: 100%; }
+
 /* Custom form styling classes usable through field groups */
 /* ------------------------------------------------- */
 
