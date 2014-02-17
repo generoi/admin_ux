@@ -14,6 +14,12 @@ if (module_exists('block')) {
 if (module_exists('diff')) {
   module_load_include('inc', 'admin_ux', 'includes/admin_ux.diff');
 }
+if (module_exists('file_entity')) {
+  module_load_include('inc', 'admin_ux', 'includes/admin_ux.file_entity');
+}
+if (module_exists('media')) {
+  module_load_include('inc', 'admin_ux', 'includes/admin_ux.media');
+}
 
 /**
  * Implements hook_init().
@@ -33,9 +39,9 @@ function admin_ux_init() {
 }
 
 /**
- * Implements hook_form_alter().
+ * Implements hook_form_FORM_ID_alter().
  */
-function admin_ux_form_node_form_alter(&$form, &$form_state, $form_id) {
+function admin_ux_form_node_form_alter(&$form, &$form_state) {
   // Move publishing options to the first (visible) tab.
   $form['options']['#weight'] = -3;
 
