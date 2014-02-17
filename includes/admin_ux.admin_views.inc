@@ -67,7 +67,7 @@ function _admin_ux_admin_views_node_alter(&$views) {
 
   // add translate column after edit
   $display->display_options['style_options']['columns']['translate_node'] = 'translate_node';
-  $display->display_options['style_options']['columns']['translate_node'] = array(
+  $display->display_options['style_options']['info']['translate_node'] = array(
     'align' => '',
     'separator' => '',
     'empty_column' => 0,
