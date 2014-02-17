@@ -36,3 +36,8 @@ Code
 * Output vocabulary description in the vocabulary overview table.
 * Display views usage based on viewfield on view edit form.
 * Display views summary with display descriptions on view edit form.
+
+Installation
+------------
+1. Enable
+2. No configurations, it just works.

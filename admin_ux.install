@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Implements hook_install().
+ * Change the module weight so block form alter runs after block_usage and
+ * blocktheme.
+ */
+function admin_ux_install() {
+  db_update('system')
+    ->fields(array('weight' => 1))
+    ->condition('name', 'admin_ux')
+    ->execute();
+}

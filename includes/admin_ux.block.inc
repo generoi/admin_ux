@@ -12,6 +12,7 @@ function admin_ux_form_block_admin_configure_alter(&$form, &$form_state) {
   if (module_exists('context')) {
     $form['visibility_title']['#access'] = FALSE;
     $form['visibility']['#access'] = FALSE;
+    $form['regions']['#access'] = FALSE;
   }
   // Move block usage further up and make it collapsible
   if (module_exists('block_usage')) {
