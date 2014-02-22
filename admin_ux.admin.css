@@ -44,6 +44,17 @@ table.field-multiple-table { width: auto; min-width: 50%; }
   margin-top: 1em;
 }
 
+/* Make multifields more compact. */
+.field-widget-multifield-default table { width: 100%; }
+.field-widget-multifield-default table td .form-wrapper {
+  float: left;
+  margin-right: 1em;
+}
+.field-widget-multifield-default .remove-button {
+  margin-bottom: 0;
+  margin-top: 1.5em;
+}
+
 /* Context UI */
 /* ------------------------------------------------- */
 
