@@ -162,14 +162,17 @@ function admin_ux_views_usage_viewfield($view) {
   foreach ($entity_loads as $entity_type => $ids) {
     // In case of nodes with a default value.
     if (count($ids) > 20) {
-      $matches[] = l($entity_type . ' # ' . implode(', ', $ids)) . ' (' . t('Too many to load') . ')';
+      $label = $entity_type . ' (' . t('Too many to load') . ')';
+      $matches[] = $label;
       continue;
     }
     $entities = entity_load($entity_type, $ids);
     foreach ($entities as $id => $entity) {
       $uri = entity_uri($entity_type, $entity);
       $options = $instance_options[$entity_type][$id];
-      $matches[] = l($entity_type . ' # ' . $id, $uri['path']) . ' (' . implode(', ', $options) . ')';
+      $label = $entity_type . ' # ' . $id;
+      $suffix = ' (' . implode(', ', $options) . ')';
+      $matches[] = l($label, $uri['path']) . $suffix;
     }
   }
   return $matches;
