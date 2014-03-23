@@ -31,19 +31,6 @@ table.field-group-format td .description { display: inline-block; margin-left: 1
 table.field-multiple-table td { padding: 5px 20px; }
 table.field-multiple-table { width: auto; min-width: 50%; }
 
-/* move formatted textarea description to the top as its difficult to notice
- * when its after the filter */
-.field-widget-text-textarea-with-summary .text-format-wrapper,
-.field-widget-text-textarea .text-format-wrapper {
-  display: table;
-  width: 100%;
-  caption-side: top;
-}
-.text-format-wrapper .description {
-  display: table-caption;
-  margin-top: 1em;
-}
-
 /* Make multifields more compact. */
 .field-widget-multifield-default table { width: 100%; }
 .field-widget-multifield-default table td .form-wrapper {
@@ -141,4 +128,25 @@ table.context-admin td {
 /* Make the style dropdown larger */
 .cke_combopanel {
   height: 300px !important;
+}
+
+/* Clientside Validation */
+/* ------------------------------------------------- */
+
+/* Style the error messages as a small colorized box */
+.form-item label.error,
+.exposed-filters .form-item label.error,
+label.error {
+  font-size: 1em;
+  /* use a darker red than system.theme.css sets */
+  background-color: #860B0B;
+  color: white;
+  display: inline-block !important; /* Override inline style */
+  padding: .5em;
+}
+
+/* Change the border of the input field to the same color as the message */
+/* Change the border of the input field to the same color as the message */
+.form-item input.error, .form-item textarea.error, .form-item select.error {
+  border-color: #860B0B;
 }

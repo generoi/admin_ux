@@ -31,9 +31,18 @@ function admin_ux_init() {
 
   // Fix various UX issues in the administration theme.
   if ($theme_info->name == variable_get('admin_theme')) {
-    drupal_add_css(drupal_get_path('module', 'admin_ux') . '/admin_ux.admin.css');
+    drupal_add_css(drupal_get_path('module', 'admin_ux') . '/css/admin_ux.admin.css');
     if (module_exists('chosen')) {
       drupal_add_js(drupal_get_path('module', 'admin_ux') . '/js/admin_ux.chosen.js');
+    }
+
+    switch ($theme_info->name) {
+      case 'adminimal':
+        drupal_add_css(drupal_get_path('module', 'admin_ux') . '/css/admin_ux.adminimal.css');
+        break;
+      case 'shiny':
+        drupal_add_css(drupal_get_path('module', 'admin_ux') . '/css/admin_ux.shiny.css');
+        break;
     }
   }
 }
