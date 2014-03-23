@@ -36,14 +36,6 @@ function admin_ux_init() {
       drupal_add_js(drupal_get_path('module', 'admin_ux') . '/js/admin_ux.chosen.js');
     }
   }
-
-  // admin_menu relies on $.browser which doesnt exist in jquery 1.9+.
-  if (module_exists('jquery_update') && version_compare(variable_get('jquery_update_jquery_version'), '1.9', '>=')) {
-    drupal_add_js(drupal_get_path('module', 'admin_ux') . '/js/jquery_update_fixes.js', array(
-      'group' => JS_LIBRARY,
-      'weight' => 3,
-    ));
-  }
 }
 
 /**
