@@ -28,8 +28,7 @@ table.field-group-format td .description { display: inline-block; margin-left: 1
 /* ------------------------------------------------- */
 
 /* Make field multiple tables more compact*/
-table.field-multiple-table td { padding: 5px 20px; }
-table.field-multiple-table { width: auto; min-width: 50%; }
+table.field-multiple-table td { padding: 5px; }
 
 /* Make multifields more compact. */
 .field-widget-multifield-default table { width: 100%; }
@@ -149,4 +148,24 @@ label.error {
 /* Change the border of the input field to the same color as the message */
 .form-item input.error, .form-item textarea.error, .form-item select.error {
   border-color: #860B0B;
+}
+
+/* Date Repeat */
+.start-date-wrapper,
+.end-date-wrapper {
+  float: left;
+  clear: none;
+  width: 48%;
+}
+.start-date-wrapper .form-type-textfield input,
+.end-date-wrapper .form-type-textfield input {
+  width: 80px;
+}
+.end-date-wrapper label {
+  float: left;
+  margin-top: .5em;
+}
+
+.container-inline-date .date-padding {
+  padding: 0;
 }
