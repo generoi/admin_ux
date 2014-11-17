@@ -13,6 +13,12 @@ function admin_ux_form_block_admin_configure_alter(&$form, &$form_state) {
     $form['visibility_title']['#access'] = FALSE;
     $form['visibility']['#access'] = FALSE;
     $form['regions']['#access'] = FALSE;
+    // Don't group i18n block settings under visibility since it's hidden.
+    if (isset($form['i18n_block'])) {
+      $form['i18n_block']['languages']['#group'] = '';
+      // Language visibility settings aren't needed.
+      $form['i18n_block']['languages']['languages']['#access'] = FALSE;
+    }
   }
   // Move block usage further up and make it collapsible
   if (module_exists('block_usage')) {

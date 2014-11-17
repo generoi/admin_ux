@@ -186,3 +186,15 @@ function admin_ux_views_usage_viewfield($view) {
   }
   return $matches;
 }
+
+/**
+ * Implements hook_module_implements_alter().
+ */
+function admin_ux_module_implements_alter(&$implementations, $hook) {
+  // We need to be able to override i18n_block.
+  if ($hook == 'form_alter' && isset($implementations['admin_ux'])) {
+    $group = $implementations['admin_ux'];
+    unset($implementations['admin_ux']);
+    $implementations['admin_ux'] = $group;
+  }
+}
