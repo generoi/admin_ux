@@ -4,10 +4,20 @@
  * Implements hook_form_FORM_ID_alter().
  */
 function admin_ux_form_file_entity_add_upload_alter(&$form, &$form_state) {
-  if (isset($form['metatags'])) {
-    $form['metatags']['#access'] = FALSE;
+  foreach(array('metatags', 'redirect', 'path', 'user', '') as $key) {
+    if (isset($form[$key])) {
+      $form[$key]['#access'] = FALSE;
+    }
   }
-  if (isset($form['redirect'])) {
-    $form['redirect']['#access'] = FALSE;
+  // Hide destination if there's only one available.
+  if (isset($form['destination']['scheme']) && count($form['destination']['scheme']['#options']) === 1) {
+    $form['destination']['#access'] = FALSE;
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function admin_ux_form_file_entity_edit_alter(&$form, &$form_state) {
+  admin_ux_form_file_entity_add_upload_alter($form, $form_state);
 }
