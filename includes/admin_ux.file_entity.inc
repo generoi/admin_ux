@@ -13,6 +13,7 @@ function admin_ux_form_file_entity_add_upload_alter(&$form, &$form_state) {
   if (isset($form['destination']['scheme']) && count($form['destination']['scheme']['#options']) === 1) {
     $form['destination']['#access'] = FALSE;
   }
+  $form['#attached']['js'][] = drupal_get_path('module', 'admin_ux') . '/js/admin_ux.file.js';
 }
 
 /**
