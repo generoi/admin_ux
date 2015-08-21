@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * Implements hook_panels_new_pane_ater().
+ *
+ * Set the default style on newly created panes to "No markup at all".
+ */
+function admin_ux_panels_panels_new_pane_alter(&$pane) {
+  $pane->style['style'] = 'naked';
+}
+
+/**
+ * Implements hook_ctools_plugin_pre_alter().
+ *
+ * Remove some default ctools plugins not to confuse site builders.
+ */
+function admin_ux_panels_ctools_plugin_pre_alter(&$plugin, &$info) {
+  switch ($plugin['plugin type']) {
+    // Remove some default panels layouts.
+    case 'styles':
+      switch ($plugin['name']) {
+        case 'rounded_corners':
+        case 'block':
+          $plugin = array();
+          $info = array();
+          break;
+        case 'default':
+          $plugin['title'] = t('With wrappers');
+          break;
+      }
+      break;
+
+    // Remove all default panels layouts.
+    case 'layouts':
+      switch ($plugin['module']) {
+        case 'panels':
+        //case 'zurb_foundation':
+          $plugin = array();
+          $info = array();
+          break;
+      }
+      break;
+  }
+}
+

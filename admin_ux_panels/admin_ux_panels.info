@@ -1,0 +1,4 @@
+name = Admin UX Panels
+description = Small administration UX improvements for Panels
+package = custom
+core = 7.x
