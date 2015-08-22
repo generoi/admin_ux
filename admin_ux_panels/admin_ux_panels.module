@@ -43,3 +43,14 @@ function admin_ux_panels_ctools_plugin_pre_alter(&$plugin, &$info) {
   }
 }
 
+/**
+ * Implementation of hook_ctools_content_subtype_alter()
+ */
+function admin_ux_panels_ctools_content_subtype_alter(&$subtype, &$plugin) {
+  $category_label  = (is_string($subtype['category'])) ? $subtype['category'] : $subtype['category'][0];
+
+  // Switch the labeling of "Miscellaneous" to "Blocks"
+  if ($category_label == 'Miscellaneous') {
+    $subtype['category'] = 'Blocks';
+  }
+}
