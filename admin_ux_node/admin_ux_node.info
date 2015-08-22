@@ -1,0 +1,11 @@
+name = Admin UX Node Edit
+description = Improved Node Edit/Add forms
+core = 7.x
+package = custom
+version = 7.x-1.0
+dependencies[] = ctools
+dependencies[] = date_popup_authored
+dependencies[] = page_manager
+features[ctools][] = page_manager:pages_default:1
+features[features_api][] = api:2
+features[page_manager_handlers][] = node_edit__default_node_edit

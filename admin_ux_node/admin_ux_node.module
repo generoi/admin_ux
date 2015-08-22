@@ -1,0 +1,231 @@
+<?php
+/**
+ * @file
+ * Code for the Feature Admin UX Node feature.
+ */
+
+include_once 'admin_ux_node.features.inc';
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function admin_ux_node_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner == 'panels' && $plugin_type == 'layouts') {
+    return "plugins/$plugin_type";
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function admin_ux_node_form_alter(&$form, &$form_state, $form_id) {
+
+  $form['#attached']['css'][] = drupal_get_path('module', 'admin_ux_node') . '/admin_ux_node.admin.css';
+  $form['#attached']['js'][] = drupal_get_path('module', 'admin_ux_node') . '/admin_ux_node.admin.js';
+
+  // Improve the title field
+  if (isset($form['title']['#title'])) {
+    $form['title']['#title_display'] = 'invisible';
+    $form['title']['#attributes']['placeholder'] = $form['title']['#title'];
+  }
+  if (isset($form['title_field'][LANGUAGE_NONE][0]['value']['#title'])) {
+    $field = &$form['title_field'][LANGUAGE_NONE][0]['value'];
+    $field['#title_display'] = 'invisible';
+    $field['#attributes']['placeholder'] = $field['#title'];
+  }
+
+  // Improve the node edit form.
+  if (strpos($form_id, '_node_form') !== FALSE) {
+
+    // Improve the URL selection form
+    if (isset($form['path']['alias'])) {
+      unset($form['path']['#type']); // remove the fieldset
+      unset($form['path']['alias']['#description']);
+      $form['path']['alias']['#title'] = '<strong>' . t('Permalink') . ':</strong>&nbsp;';
+      $form['path']['alias']['#title'] .= (isset($_SERVER['HTTPS'])) ? 'https://' . $_SERVER['HTTP_HOST'] . '/' : 'http://' . $_SERVER['HTTP_HOST'] . '/';
+
+      if (isset($form['path']['pathauto'])) {
+        $form['path']['pathauto']['#access'] = FALSE;
+        $form['path']['alias']['#states'] = array();
+        $form['path']['alias']['#attributes'] = array('placeholder' => '<' . t('magically generated') . '>');
+        unset($form['path']['pathauto']['#description']);
+        $form['#submit'][] = 'admin_ux_node_pathauto_submit';
+      }
+    }
+
+    // Improve publishing options.
+    $form['options']['status']['#access'] = FALSE;
+    $form['options']['promote']['#access'] = FALSE;
+    $form['options']['sticky']['#title'] = t('Featured content');
+
+    // Provide an unpublish/publish button instead of a checkbox.
+    $form['actions']['publishing'] = array(
+      '#type' => 'submit',
+      '#value' => t('Unpublish'),
+      '#submit' => array(
+        'admin_ux_node_node_form_submit',
+        'node_form_submit',
+      ),
+      '#weight' => 6,
+    );
+
+    // If creating a new node.
+    if (is_null($form['nid']['#value'])) {
+      $form['actions']['submit']['#value'] = t('Publish');
+      $form['actions']['publishing']['#value'] = t('Save as draft');
+    }
+    // If saving a published node.
+    elseif ($form['#node']->status == NODE_PUBLISHED) {
+      $form['actions']['publishing']['#value'] = t('Unpublish');
+    }
+    // If saving an unpublished node.
+    elseif ($form['#node']->status == NODE_NOT_PUBLISHED) {
+      $form['actions']['publishing']['#value'] = t('Publish');
+    }
+
+    // Add clearfix to node body container to prevent clearing issue with
+    // vertical tabs - @see https://drupal.org/node/1686500
+    if (isset($form['body']['#type']) && $form['body']['#type'] == 'container') {
+      $form['body']['#attributes']['class'][] = 'clearfix';
+    }
+    // Hide the body label if it's 'Body' (which isn't terribly helpful) and the
+    // field is required.
+    if ($form['body'][LANGUAGE_NONE][0]['#title'] == t('Body')) {
+      if ($form['body'][LANGUAGE_NONE][0]['summary']['#type'] == 'textarea') {
+        // We can't just set '#title_display' to invisible because it'll break
+        // the summary Javascript. So, we just set a class which we'll use in
+        // our own Javascript to hide the label.
+        $form['body']['#attributes']['class'][] = 'admin-ux-node-hide-body-label';
+      }
+      else {
+        $form['body'][LANGUAGE_NONE][0]['#title_display'] = 'invisible';
+      }
+    }
+
+
+    // Improve authoring options
+    if (isset($form['author'])) {
+      unset($form['author']['name']['#description']);
+      $form['author']['name']['#title'] = t('Author');
+      $form['author']['name']['#size'] = '40';
+      $form['author']['name']['#weight'] = 4;
+      $form['author']['date']['#weight'] = 5;
+
+      $form['author']['date']['#title_display'] = 'invisible';
+      $form['author']['date']['#size'] = 7;
+
+      // Adjust options for Date Popup Module
+      if (module_exists('date_popup_authored')) {
+        $form['author']['date']['#title_display'] = 'invisible';
+        $form['author']['date']['#size'] = 20;
+      }
+    }
+
+    // Improve the revision interface
+    if (!empty($form['revision_information']['revision']['#access'])) {
+      $form['revision_information']['log']['#states'] = array(
+        'visible' => array(
+          'input[name="revision"]' => array('checked' => TRUE)
+        )
+      );
+      $form['revision_information']['log']['#weight'] = 10;
+      $form['revision_information']['log']['#title_display'] = 'invisible';
+      $form['revision_information']['revision']['#weight'] = 9;
+      $form['options']['revision'] = $form['revision_information']['revision'];
+      $form['options']['log'] = $form['revision_information']['log'];
+      unset($form['revision_information']['#type']);
+      unset($form['revision_information']['log']);
+      unset($form['revision_information']['revision']);
+    }
+
+    // Improve the menu adding experience
+    if (isset($form['menu']) && isset($form['menu']['enabled']) && !empty($form['menu']['#access'])) {
+      $form['menu']['link']['link_title']['#size'] = '';
+      $form['menu']['link']['weight']['#access'] = FALSE;
+      $form['menu']['link']['link_title']['#title'] = t('Link title');
+      $form['menu']['link']['parent']['#title'] = t('Parent');
+      $form['menu']['link']['description']['#access'] = variable_get('admin_ux_node_link_description', FALSE);
+      $form['#validate'][] = 'admin_ux_node_menu_validate';
+    }
+
+    // Improve comment options
+    if (isset($form['comment_settings'])) {
+      unset($form['comment_settings']['#type']);
+      unset($form['comment_settings']['comment']['#title_display']);
+      $form['comment_settings']['comment']['#type'] = 'checkbox';
+      $form['comment_settings']['comment']['#return_value'] = 2;
+      foreach (element_children($form['comment_settings']['comment']) as $key) {
+        if (isset($form['comment_settings']['comment'][$key]['#description'])) {
+          unset($form['comment_settings']['comment'][$key]['#description']);
+        }
+      }
+    }
+
+  }
+}
+
+/**
+ * Implementation of hook_module_implements_alter()
+ */
+function admin_ux_node_module_implements_alter(&$implementations, $hook) {
+  // Run our hook last.
+  if ($hook == 'form_alter') {
+    $group = $implementations['admin_ux_node'];
+    unset($implementations['admin_ux_node']);
+    $implementations['admin_ux_node'] = $group;
+  }
+}
+
+/**
+ * Submit function for adding publishing settings
+ */
+function admin_ux_node_node_form_submit($form, &$form_state) {
+  // If the user clicked the publishing button and the node is published,
+  // unpublish it.
+  if ($form_state['node']->status == NODE_PUBLISHED) {
+    $form_state['values']['status'] = NODE_NOT_PUBLISHED;
+    $form_state['input']['status'] = NODE_NOT_PUBLISHED;
+  }
+  // If the node was published, unpublish it.
+  else {
+    $form_state['values']['status'] = NODE_PUBLISHED;
+    $form_state['input']['status'] = NODE_PUBLISHED;
+  }
+}
+
+/**
+ * Submit function for adding pathauto settings
+ */
+function admin_ux_node_pathauto_submit($form, &$form_state) {
+  $values = $form_state['values'];
+  $autogenerate = TRUE;
+
+  // If the submitted 'alias' is NOT empty then we potentially may not want to
+  // auto-generate.
+  if (!empty($values['path']['alias'])) {
+    // If the submitted alias differs than the previous form default value then
+    // the user is attempting to manually set it.
+    if ($values['path']['alias'] != $form['path']['alias']['#default_value']) {
+      $autogenerate = FALSE;
+    }
+    // If the submitted value is equal to the previous value AND the
+    // autogenerate (pathauto) setting is FALSE then an alias was previously
+    // manually set so leave it.
+    elseif (!empty($form['path']['pathauto']) &&
+      !$form['path']['pathauto']['#default_value']) {
+      $autogenerate = FALSE;
+    }
+  }
+
+  $form_state['values']['path']['pathauto'] = $autogenerate;
+  $form_state['input']['path']['pathauto'] = $autogenerate;
+}
+
+/**
+ * Validate function for adding menu validation
+ */
+function admin_ux_node_menu_validate($form, &$form_state) {
+  if ($form_state['input']['menu']['enabled'] && !$form_state['input']['menu']['link_title']) {
+    form_set_error('link_title', t('Menu link title is required.'));
+  }
+}

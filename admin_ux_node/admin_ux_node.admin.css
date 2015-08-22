@@ -1,0 +1,106 @@
+/**
+ * General styling
+ */
+#node-edit .panel-separator { clear: both; }
+#node-edit .form-item { padding-right: 0; }
+
+/**
+ * Title and body styling
+ */
+#node-edit #edit-title,
+#node-edit #edit-title-field input {
+  font-size: 2em;
+  width: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#node-edit .form-item-title,
+#node-edit .form-item-title-field-und-0-value {
+  margin-bottom: 0;
+  padding-bottom: .25em;
+}
+
+#node-edit #edit-body .form-type-textarea { padding-top: .25em; }
+#node-edit #edit-body { width: 100%; }
+
+/**
+ * Pathauto styling
+ */
+#node-edit .form-item-path-alias * { float: left; }
+#node-edit .form-item-path-alias label { font-weight: 400; }
+
+#node-edit .form-item-path-alias {
+  margin-top: .25em;
+  margin-bottom: .25em;
+  padding: 0;
+  font-size: .8em;
+  vertical-align: middle;
+  min-height: 1.2em;
+  display: flex;
+}
+
+#node-edit .form-item-path-alias input {
+  margin-left: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
+  flex: 1;
+}
+
+/**
+ * Date/Time Styling
+ */
+#node-edit .container-inline-date > .form-item {
+  border: 0;
+  margin: 0;
+  display: block;
+}
+
+#node-edit .container-inline-date .date-padding {
+  float: none;
+  padding: 0;
+  display: flex;
+}
+#node-edit .container-inline-date .date-padding > div {
+  width: 100%;
+}
+
+#node-edit .container-inline-date input {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+#node-edit .container-inline-date .form-item-date-time,
+#node-edit .container-inline-date .form-item-date-date {
+  padding-bottom: 1em;
+}
+#node-edit .container-inline-date .form-item-date-date {
+  margin-right: 5px;
+}
+
+#node-edit .container-inline-date .form-item-date-date .description,
+#node-edit .container-inline-date .form-item-date-time .description {
+  display: none;
+}
+
+/**
+ * Author
+ */
+#node-edit #edit-name {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/**
+ * Filters
+ */
+#node-edit .filter-guidelines { display: none; }
+#node-edit .filter-wrapper .fieldset-wrapper { display: flex; justify-content: space-between; }
+#node-edit .filter-wrapper .form-type-select { order: 1; }
+#node-edit .filter-wrapper .filter-help { order: 2; margin-bottom: 0; }
+#node-edit .filter-wrapper .wysiwyg-toggle-wrapper { order: 3; }

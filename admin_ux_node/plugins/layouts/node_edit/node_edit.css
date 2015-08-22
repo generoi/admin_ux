@@ -1,0 +1,6 @@
+.panel-node-edit-row {
+  display: flex;
+}
+.panel-node-edit-column { flex: 1; }
+.panel-node-edit-left { flex: 3; margin-right: 1em; }
+.panel-node-edit-right { flex: 1; }
