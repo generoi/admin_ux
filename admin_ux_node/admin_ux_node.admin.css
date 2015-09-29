@@ -29,7 +29,11 @@
  * Pathauto styling
  */
 #node-edit .form-item-path-alias * { float: left; }
-#node-edit .form-item-path-alias label { font-weight: 400; }
+#node-edit .form-item-path-alias label {
+  font-weight: 400;
+  font-size: 1em;
+  line-height: 2.5;
+}
 
 #node-edit .form-item-path-alias {
   margin-top: .25em;
@@ -46,6 +50,8 @@
   padding-top: 0;
   padding-bottom: 0;
   flex: 1;
+  height: 2em;
+  line-height: 2;
 }
 
 /**
@@ -94,6 +100,15 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 100%;
+}
+
+/**
+ * Language
+ */
+#node-edit .form-item-language label {
+  display: inline-block;
+  margin-right: 1em;
+  margin-bottom: 0;
 }
 
 /**
