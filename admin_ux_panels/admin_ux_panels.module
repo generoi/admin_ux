@@ -1,6 +1,17 @@
 <?php
 
 /**
+ * Implements hook_admin_paths().
+ */
+function admin_ux_panels_admin_paths() {
+  $paths = array(
+    'node/*/panel_content' => TRUE,
+    'node/*/panel_layout' => TRUE,
+  );
+  return $paths;
+}
+
+/**
  * Implements hook_panels_new_pane_ater().
  *
  * Set the default style on newly created panes to "No markup at all".
