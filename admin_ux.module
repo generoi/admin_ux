@@ -2,7 +2,6 @@
 
 /**
  * @file admin_ux.module
- * TODO: Enter file description here.
  */
 
 if (module_exists('admin_views')) {

@@ -169,3 +169,13 @@ label.error {
 .container-inline-date .date-padding {
   padding: 0;
 }
+
+/* Media Browser */
+/* ------------------------------------------------- */
+/* Limit the label to one line, the image has it as a title attribute anyway */
+.media-item .label-wrapper label {
+  font-size: 9px;
+  padding: 5px 10px;
+  line-height: 13px;
+  max-height: 11px;
+}
