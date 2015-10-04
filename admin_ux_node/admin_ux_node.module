@@ -19,6 +19,10 @@ function admin_ux_node_ctools_plugin_directory($owner, $plugin_type) {
  * Implements hook_form_alter().
  */
 function admin_ux_node_form_alter(&$form, &$form_state, $form_id) {
+  global $theme_info;
+  if ($theme_info->name != variable_get('admin_theme')) {
+    return;
+  }
 
   $form['#attached']['css'][] = drupal_get_path('module', 'admin_ux_node') . '/admin_ux_node.admin.css';
   $form['#attached']['js'][] = drupal_get_path('module', 'admin_ux_node') . '/admin_ux_node.admin.js';
